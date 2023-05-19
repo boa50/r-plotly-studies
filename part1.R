@@ -2,6 +2,7 @@ if (!require(remotes)) install.packages("remotes")
 remotes::install_github("cpsievert/plotly_book")
 
 library(plotly)
+library(listviewer)
 
 data("diamonds")
 
@@ -17,3 +18,8 @@ diamonds %>%
     span = I(3)
   ) %>%
   layout(title = "My chart title")
+
+# Debuging created chart
+p <- plot_ly(diamonds, x = ~cut, color = ~clarity, colors = "Accent")
+plotly_build(p)
+plotly_json(p)
