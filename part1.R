@@ -41,3 +41,23 @@ plot_ly() %>%
 
 # Documentation of plotly traces
 schema()
+
+# Creating scatter plots with error bars
+# Fit a full-factorial linear model
+m <- lm(
+  Sepal.Length ~ Sepal.Width * Petal.Length * Petal.Width,
+  data = iris
+)
+
+# (1) get a tidy() data structure of covariate-level info
+# (e.g., point estimate, standard error, etc)
+# (2) make sure term column is a factor ordered by the estimate
+# (3) plot estimate by term with an error bar for the standard error
+broom::tidy(m) %>%
+  mutate(term = forcats::fct_reorder(term, estimate)) %>%
+  plot_ly(x = ~estimate, y = ~term) %>%
+  add_markers(
+    error_x = ~list(value = std.error),
+    color = I("black"),
+    hoverinfo = "x"
+  )
