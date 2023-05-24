@@ -61,3 +61,22 @@ broom::tidy(m) %>%
     color = I("black"),
     hoverinfo = "x"
   )
+
+### CREATING MAPS
+library(rnaturalearth)
+
+world <- ne_countries(returnclass = "sf")
+plot_ly(world, color = I("gray90"), stroke = I("black"), span = I(1))
+
+canada <- ne_states(country = "Canada", returnclass = "sf")
+plot_ly(canada, split = ~name, color = ~provnum_ne)
+
+plot_ly(
+  canada,
+  split = ~name,
+  color = I("gray90"),
+  text = ~paste(name, "is \n province number", provnum_ne),
+  hoveron = "fills",
+  hoverinfo = "text",
+  showlegend = FALSE
+)
