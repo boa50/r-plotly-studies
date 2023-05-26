@@ -80,3 +80,7 @@ plot_ly(
   hoverinfo = "text",
   showlegend = FALSE
 )
+
+### PLOTING MULTIPLE NUMERIC DISTRIBUTIONS
+plot_ly(diamonds, x = ~cut, color = ~clarity) %>%
+  add_histogram()
