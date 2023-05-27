@@ -1,6 +1,7 @@
 # if (!require(remotes)) install.packages("remotes")
 # remotes::install_github("cpsievert/plotly_book")
 
+library(dplyr)
 library(plotly)
 library(listviewer)
 
@@ -84,3 +85,23 @@ plot_ly(
 ### PLOTING MULTIPLE NUMERIC DISTRIBUTIONS
 plot_ly(diamonds, x = ~cut, color = ~clarity) %>%
   add_histogram()
+
+### PLOTING MULTIPLE BOXPLOTS
+p <- plot_ly(diamonds, y = ~price, color = I("black"),
+             alpha = 0.1, boxpoints = "suspectedoutliers")
+p1 <- p %>% add_boxplot(x = "Overall")
+p2 <- p %>% add_boxplot(x = ~cut)
+subplot(
+  p1, p2, shareY = TRUE,
+  widths = c(0.2, 0.8), margin = 0
+) %>% hide_legend()
+
+# Sorted boxplots
+lvls <- diamonds %>%
+  group_by(cut) %>%
+  summarise(m = median(price)) %>%
+  arrange(m) %>%
+  pull(cut)
+
+p %>%
+  add_boxplot(x = ~factor(cut, lvls))
