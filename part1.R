@@ -106,7 +106,7 @@ lvls <- diamonds %>%
 p %>%
   add_boxplot(x = ~factor(cut, lvls))
 
-### PLOTING HEATMAPS
+### PLOTTING HEATMAPS
 diamonds %>%
   plot_ly(x = ~log(carat), y = ~log(price)) %>%
   add_histogram2d(zsmooth = "best") %>%
@@ -118,3 +118,19 @@ corr <- cor(dplyr::select_if(diamonds, is.numeric))
 plot_ly(colors = "RdBu") %>%
   add_heatmap(x = rownames(corr), y = colnames(corr), z = corr) %>%
   colorbar(limits = c(-1, 1))
+
+### PLOTTING 3D CHARTS
+x <- seq_len(nrow(volcano)) + 100
+y <- seq_len(ncol(volcano)) + 500
+plot_ly() %>% add_surface(x = ~x, y = ~y, z = ~volcano)
+
+# The way to change the axis titles is different
+plot_ly(mpg, x = ~cty, y = ~hwy, z = ~cyl) %>%
+  add_markers(color = ~cyl )%>%
+  layout(
+    scene = list(
+      xaxis = list(title = "MPG city"),
+      yaxis = list(title = "MPG highway"),
+      zaxis = list(title = "Number of cylinders")
+    )
+  )
