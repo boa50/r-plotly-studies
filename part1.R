@@ -105,3 +105,16 @@ lvls <- diamonds %>%
 
 p %>%
   add_boxplot(x = ~factor(cut, lvls))
+
+### PLOTING HEATMAPS
+diamonds %>%
+  plot_ly(x = ~log(carat), y = ~log(price)) %>%
+  add_histogram2d(zsmooth = "best") %>%
+    colorbar(title = "zsmooth") %>%
+    layout(xaxis = list(title = "zsmooth"))
+
+# Correlation matrix
+corr <- cor(dplyr::select_if(diamonds, is.numeric))
+plot_ly(colors = "RdBu") %>%
+  add_heatmap(x = rownames(corr), y = colnames(corr), z = corr) %>%
+  colorbar(limits = c(-1, 1))
