@@ -86,3 +86,15 @@ subplot(barcharts, margin = 0.01) %>%
   subplot(map, nrows = 2, heights = c(0.3, 0.7), margin = 0.1) %>%
   layout(legend = list(y = 1)) %>%
   colorbar(y = 0.5)
+
+### Using flexbox to arrange plots
+library(htmltools)
+p <- plot_ly(x = rnorm(100))
+# NOTE: you don't need browsable() in rmarkdown,
+# but you do at the R prompt
+browsable(div(
+  style = "display: flex; flex-wrap: wrap; justify-content: center",
+  div(p, style = "width: 40%; border: solid;"),
+  div(p, style = "width: 40%; border: solid;"),
+  div(p, style = "width: 100%; border: solid;")
+))
