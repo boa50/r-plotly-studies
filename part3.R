@@ -98,3 +98,25 @@ browsable(div(
   div(p, style = "width: 40%; border: solid;"),
   div(p, style = "width: 100%; border: solid;")
 ))
+
+
+### Creating animations
+data(gapminder, package = "gapminder")
+
+base <- gapminder %>%
+  plot_ly(x = ~gdpPercap, y = ~lifeExp, size = ~pop,
+          text = ~country, hoverinfo = "text") %>%
+  layout(xaxis = list(type = "log"))
+
+base %>%
+  add_markers(color = ~continent, frame = ~year, ids = ~country) %>%
+  # Adds some bounce to the animation and change the duration
+  animation_opts(1000, easing = "elastic", redraw = FALSE) %>%
+  # Change the play button options
+  animation_button(
+    x = 1, xanchor = "right", y = 0, yanchor = "bottom"
+  ) %>%
+  # Change the animation slider options
+  animation_slider(
+    currentvalue = list(prefix = "YEAR ", font = list(color="red"))
+  )
